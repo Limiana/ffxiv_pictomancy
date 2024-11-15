@@ -103,7 +103,15 @@ internal class DXRenderer : IDisposable
     {
         var device = Device.Instance();
         ViewportSize = new(device->Width, device->Height);
-        ViewProj = *(SharpDX.Matrix*)&Control.Instance()->ViewProjectionMatrix;
+        if(PictoService.GetViewProjMatrix != null)
+        {
+            var matrix = PictoService.GetViewProjMatrix();
+            ViewProj = *(SharpDX.Matrix*)&matrix;
+        }
+        else
+        {
+            ViewProj = *(SharpDX.Matrix*)&Control.Instance()->ViewProjectionMatrix;
+        }
 
         TriFill.UpdateConstants(RenderContext, new() { ViewProj = ViewProj });
         if (!FanDegraded)

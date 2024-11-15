@@ -3,6 +3,8 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs;
+using FFXIVClientStructs.FFXIV.Common.Math;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 using Pictomancy.DXDraw;
@@ -24,9 +26,11 @@ public class PictoService
 
     internal static PctDrawList DrawList;
     internal static PctDrawHints Hints;
+    internal static Func<Matrix4x4>? GetViewProjMatrix = null;
 
-    public static void Initialize(IDalamudPluginInterface pluginInterface)
+    public static void Initialize(IDalamudPluginInterface pluginInterface, Func<Matrix4x4>? getViewProjMatrix = null)
     {
+        GetViewProjMatrix = getViewProjMatrix;
         pluginInterface.Create<PictoService>();
         _renderer = new();
         _addonClipper = new();
