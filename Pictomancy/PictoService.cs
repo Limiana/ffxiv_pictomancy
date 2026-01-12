@@ -1,5 +1,4 @@
 ﻿global using Dalamud.Bindings.ImGui;
-using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.IoC;
 using Dalamud.Plugin;
@@ -21,7 +20,6 @@ public class PictoService
     [PluginService] internal static IFramework Framework { get; private set; } = null!;
 
     private static DXRenderer? _dxRenderer;
-    private static AddonClipper? _addonClipper;
     private static VfxRenderer? _vfxRenderer;
     public static VfxRenderer VfxRenderer => _vfxRenderer;
 
@@ -38,7 +36,6 @@ public class PictoService
     {
         InitializePluginServices(pluginInterface);
         _dxRenderer = new();
-        _addonClipper = new();
     }
 
     public static void InitializeVfxRenderer(IDalamudPluginInterface pluginInterface)
@@ -102,9 +99,8 @@ public class PictoService
         if (Hints.DrawWhenFaded || IsFaded()) return null;
 
         return DrawList = new PctDrawList(
-            imguidrawlist ?? ImGui.GetBackgroundDrawList(),
-            _dxRenderer,
-            _addonClipper
+            imguidrawlist,
+            _dxRenderer
         );
     }
 
